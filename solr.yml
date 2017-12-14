@@ -1,0 +1,4 @@
+- hosts: bpeshopsit02
+  roles:
+       - ansible-solr
+
