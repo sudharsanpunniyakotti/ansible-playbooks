@@ -1,0 +1,36 @@
+---
+- name: Create a user Solr
+  become: yes
+  command: useradd -d /opt/solr -s /sbin/false solr
+  ignore_errors: yes 
+
+- name: Creates Solr  directory
+  become: yes
+  file: path=/opt/solr state=directory owner=solr group=solr  recurse=yes
+
+
+- name: Download the Solr Package
+  become: yes
+  get_url: url=http://archive.apache.org/dist/lucene/solr/4.6.0/solr-4.6.0.tgz  dest=/root/
+
+- name: Unzip solr package
+  become: yes
+  unarchive: src=/root/solr-4.6.0.tgz   dest=/root/  copy=no
+  
+- name: Copy solr Directory
+  become: yes
+  shell: cp -R /root/solr-4.6.0/* /opt/solr
+
+- name: Download the init file
+  become: yes
+  get_url: url=https://gist.githubusercontent.com/drupol/7367523/raw/2eaa89a116422dc5f9682f9bcf45ec4ee9777603/solr   dest=/etc/init.d/solr mode=0755
+
+- name: update rc.d
+  become: yes
+  shell: update-rc.d solr defaults
+
+- name: Start the service
+  become: yes
+  service: name=solr state=started
+
+
