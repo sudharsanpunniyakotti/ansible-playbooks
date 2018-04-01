@@ -1,0 +1,4 @@
+- hostsall
+  roles:
+       - ansible-meltdown
+

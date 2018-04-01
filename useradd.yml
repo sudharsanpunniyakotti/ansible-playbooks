@@ -1,0 +1,25 @@
+- name: Create user
+  hosts: all
+  tasks:
+    - name: Create new user
+      user:
+        name: tcsadmin
+        shell: /bin/bash
+    - name: Create .ssh folder
+      file:
+        path: ~tcsadmin/.ssh
+        state: directory
+        owner: tcsadmin
+        group: tcsadmin
+        mode: 0700
+
+
+    - name: Upload SSH key
+      copy:
+         src: /root/playbook/keys/tcsadmin.pub
+         dest: ~tcsadmin/.ssh/authorized_keys
+         owner: tcsadmin
+         group: tcsadmin
+         mode: 0700
+
+
